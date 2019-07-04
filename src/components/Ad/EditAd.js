@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { editAd } from "../../actions/adActions/editAd";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 const EditAd = props => {
-  const { ad, editAd } = props;
+  const { ad, editAd, currentUser } = props;
   const [editedAd, setEditedAd] = useState({
     id: ad.id,
     title: ad.title,
@@ -35,8 +35,14 @@ const EditAd = props => {
     }
   };
 
+  let redirect = null;
+  if (ad.author !== currentUser.username) {
+    redirect = <Redirect to="/" />;
+  }
+
   return (
     <div className="container col-lg-4 col-md-7 col-9 mt-5 bg-dark p-3 shadow rounded-top">
+      {redirect}
       <label className="col-form-label text-light font-weight-bold">
         Title:
       </label>
@@ -78,7 +84,8 @@ const EditAd = props => {
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.edit_id;
   return {
-    ad: state.adsR.ads.find(ad => ad.id === id)
+    ad: state.adsR.ads.find(ad => ad.id === id),
+    currentUser: state.authR.currentUser
   };
 };
 

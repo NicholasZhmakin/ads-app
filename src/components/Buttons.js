@@ -16,40 +16,20 @@ const Buttons = props => {
     props.history.push("/edit/" + ad.id);
   };
 
-  if (currentUser === null) {
+  if (currentUser === null || ad.author !== currentUser.username) {
     controlBtns = null;
-  }
-  if (currentUser !== null) {
-    if (ad.author === currentUser.username) {
-      controlBtns = (
-        <div className="row justify-content-center mt-5">
-          <button
-            className="btn btn-secondary mx-1"
-            onClick={() => handleEdit()}
-          >
-            Edit Ad
-          </button>
+  } else {
+    controlBtns = (
+      <div className="row justify-content-center mt-5">
+        <button className="btn btn-secondary mx-1" onClick={() => handleEdit()}>
+          Edit Ad
+        </button>
 
-          <button
-            className="btn btn-danger mx-1"
-            onClick={() => handleDelete()}
-          >
-            Delete Ad
-          </button>
-        </div>
-      );
-    } else {
-      controlBtns = (
-        <div className="row justify-content-center mt-5">
-          <button
-            className="btn btn-secondary mx-1"
-            onClick={() => handleEdit()}
-          >
-            Edit Ad
-          </button>
-        </div>
-      );
-    }
+        <button className="btn btn-danger mx-1" onClick={() => handleDelete()}>
+          Delete Ad
+        </button>
+      </div>
+    );
   }
 
   return <React.Fragment>{controlBtns}</React.Fragment>;
